@@ -1,0 +1,24 @@
+name: chat_app
+description: A Flutter chat application
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  socket_io_client: ^2.0.3+1
+  intl: ^0.18.1
+  cupertino_icons: ^1.0.6
+  flutter_webrtc: ^0.9.47
+  permission_handler: ^11.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
