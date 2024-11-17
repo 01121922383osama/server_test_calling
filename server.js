@@ -3,7 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://server-test-calling-ejvn6wrlm-osamas-projects-1be5ef15.vercel.app",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
