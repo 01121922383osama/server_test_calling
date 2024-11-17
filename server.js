@@ -12,7 +12,7 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 'https://server-test-calling-o9mgghicy-osamas-projects-1be5ef15.vercel.app;
 
 // Basic route to test if server is running
 app.get('/', (_req, res) => {
