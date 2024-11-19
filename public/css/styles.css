@@ -1,4 +1,3 @@
-/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -31,36 +30,18 @@ body {
 .welcome-user {
     font-size: 14px;
     margin-top: 5px;
-    display: block;
 }
 
-/* Chat Box */
 .chat-box {
     flex: 1;
     overflow-y: auto;
-    padding: 10px 10px 20px 10px;
+    padding: 10px;
     background-color: #e5ddd5;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Adds spacing between messages */
 }
 
-/* Smooth scrolling for the chat */
-.chat-box::-webkit-scrollbar {
-    width: 6px;
-}
-
-.chat-box::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 3px;
-}
-
-.chat-box::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
-
-/* Chat Bubbles */
 .message-bubble {
     max-width: 70%;
     padding: 10px;
@@ -84,7 +65,6 @@ body {
 .message-info {
     font-size: 12px;
     color: #555;
-    margin-bottom: 5px;
 }
 
 .message-text {
@@ -92,15 +72,20 @@ body {
     color: #000;
 }
 
-/* Status Messages */
-.status {
-    text-align: center;
-    font-size: 14px;
-    color: #888;
-    margin: 5px 0;
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    border: calc(2px + 0.1vw) solid #f44336;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
 }
 
-/* Message Form */
+.logout-button:hover {
+    background-color: #d32f2f;
+}
+
 .message-form {
     display: flex;
     border-top: 1px solid #ddd;
@@ -128,20 +113,4 @@ body {
 
 .message-form button:hover {
     background-color: #0b8063;
-}
-
-.logout-button {
-    background-color: #f44336;
-    color: white;
-    border: calc(2px + 0.1vw) solid #f44336;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    float: right;
-    margin-left: 10px;
-    /* Ensure spacing from other elements */
-}
-
-.logout-button:hover {
-    background-color: #d32f2f;
 }
