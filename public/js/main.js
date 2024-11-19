@@ -5,14 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageForm = document.getElementById('message-form');
   const messageInput = document.getElementById('message');
 
+  if (!username) {
+    console.error('No username provided');
+    return;
+  }
+
   socket.emit('join', username);
 
   socket.on('message', (data) => {
+    if (!data || !data.username || !data.message) {
+      console.error('Invalid message format:', data);
+      return;
+    }
+
     const messageElement = document.createElement('div');
     messageElement.classList.add('message-bubble');
     if (data.username === username) {
       messageElement.classList.add('sent');
-    } else {
+    } else if (data.username !== username) {
       messageElement.classList.add('received');
     }
     messageElement.innerHTML = `
@@ -33,3 +43,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+

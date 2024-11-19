@@ -45,6 +45,10 @@
 
             // Receive messages
             socket.on('message', (data) => {
+                if (!data || !data.username || !data.message) {
+                    console.error('Invalid message format:', data);
+                    return;
+                }
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message-bubble');
                 if (data.username === username) {
@@ -53,12 +57,12 @@
                     messageElement.classList.add('received');
                 }
                 messageElement.innerHTML = `
-          <div class="message-info">
-            <span class="message-username">${data.username}</span>
-            <span class="message-timestamp">${data.timestamp}</span>
-          </div>
-          <div class="message-text">${data.message}</div>
-        `;
+                    <div class="message-info">
+                        <span class="message-username">${data.username}</span>
+                        <span class="message-timestamp">${data.timestamp}</span>
+                    </div>
+                    <div class="message-text">${data.message}</div>
+                `;
                 chatBox.appendChild(messageElement);
                 chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
             });
@@ -72,9 +76,11 @@
                     messageInput.value = '';
                 }
             });
-        });
-        document.getElementById('logout-button').addEventListener('click', () => {
-            window.location.href = '/logout';
+
+            // Logout
+            document.getElementById('logout-button').addEventListener('click', () => {
+                window.location.href = '/logout';
+            });
         });
     </script>
 

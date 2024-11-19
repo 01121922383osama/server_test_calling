@@ -43,7 +43,6 @@ app.get('/logout', (_req, res) => {
   res.redirect('/'); // Redirect to login page
 });
 
-
 // Store connected users and their socket IDs
 const users = new Map();
 
@@ -137,3 +136,4 @@ io.on('connection', (socket) => {
 http.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
