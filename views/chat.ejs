@@ -3,21 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
+  <title>Chat Room</title>
   <link rel="stylesheet" href="/css/styles.css">
   <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1>Chat Room</h1>
+      <span>Welcome, <%= username %>!</span>
+    </header>
+    <div id="chat" class="chat-box"></div>
+    <form id="message-form" class="message-form">
+      <input type="text" id="message" placeholder="Type a message..." autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+  </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const socket = io();
       const username = '<%= username %>';
-      const chat = document.getElementById('chat');
+      const chatBox = document.getElementById('chat');
       const messageForm = document.getElementById('message-form');
       const messageInput = document.getElementById('message');
 
       // Join the chat
       socket.emit('join', username);
 
-      // Listen for messages
+      // Display received messages
       socket.on('message', (data) => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message-bubble');
@@ -33,25 +46,8 @@
           </div>
           <div class="message-text">${data.message}</div>
         `;
-        chat.appendChild(messageElement);
-        chat.scrollTop = chat.scrollHeight;
-      });
-
-      // Listen for user join/leave events
-      socket.on('userJoined', (user) => {
-        const statusElement = document.createElement('div');
-        statusElement.classList.add('status');
-        statusElement.textContent = `${user} joined the chat.`;
-        chat.appendChild(statusElement);
-        chat.scrollTop = chat.scrollHeight;
-      });
-
-      socket.on('userLeft', (user) => {
-        const statusElement = document.createElement('div');
-        statusElement.classList.add('status');
-        statusElement.textContent = `${user} left the chat.`;
-        chat.appendChild(statusElement);
-        chat.scrollTop = chat.scrollHeight;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
       });
 
       // Send a message
@@ -65,20 +61,5 @@
       });
     });
   </script>
-</head>
-<body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <h1>Chat Room</h1>
-      <span class="welcome-user">Welcome, <%= username %>!</span>
-    </header>
-    <div id="chat" class="chat-box">
-      <!-- Chat messages will appear here -->
-    </div>
-    <form id="message-form" class="message-form">
-      <input type="text" id="message" placeholder="Type a message..." autocomplete="off" required>
-      <button type="submit">Send</button>
-    </form>
-  </div>
 </body>
 </html>

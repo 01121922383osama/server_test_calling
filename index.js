@@ -1,28 +1,28 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const path = require('path');
+const moment = require('moment');
+
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http, {
+const server = http.createServer(app);
+const io = socketIo(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
-const cors = require('cors');
-const path = require('path');
-const moment = require('moment');
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-const PORT = process.env.PORT || 3000;
+// Store connected users
+const users = new Map();
 
 // Route to display the login page
 app.get('/', (_req, res) => {
@@ -33,51 +33,43 @@ app.get('/', (_req, res) => {
 app.post('/login', (req, res) => {
   const { username } = req.body;
   if (username) {
-    res.render('chat', { username });
+    res.render('chat', { username }); // Pass the username to the template
   } else {
     res.redirect('/');
   }
 });
 
-// Store connected users and their socket IDs
-const users = new Map();
-
+// Socket.io functionality
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
-  // Handle user joining
   socket.on('join', (username) => {
     users.set(socket.id, username);
-    console.log(`${username} joined with socket ID: ${socket.id}`);
+    console.log(`${username} joined`);
     io.emit('userJoined', username);
-    io.emit('userList', Array.from(users.values()));
   });
 
-  // Handle messages
   socket.on('message', (message) => {
     const username = users.get(socket.id);
-    if (username) {
-      io.emit('message', {
-        username,
-        message,
-        timestamp: moment().format('h:mm A'),
-      });
-    }
+    io.emit('message', {
+      username,
+      message,
+      timestamp: moment().format('h:mm A'),
+    });
   });
 
-  // Handle disconnection
   socket.on('disconnect', () => {
     const username = users.get(socket.id);
     if (username) {
       users.delete(socket.id);
-      console.log(`${username} disconnected`);
       io.emit('userLeft', username);
-      io.emit('userList', Array.from(users.values()));
+      console.log(`${username} disconnected`);
     }
   });
 });
 
 // Start the server
-http.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
