@@ -129,3 +129,19 @@ body {
 .message-form button:hover {
     background-color: #0b8063;
 }
+
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    border: calc(2px + 0.1vw) solid #f44336;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-left: 10px;
+    /* Ensure spacing from other elements */
+}
+
+.logout-button:hover {
+    background-color: #d32f2f;
+}

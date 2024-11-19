@@ -1,65 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Room</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="/socket.io/socket.io.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
+
 <body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <h1>Chat Room</h1>
-      <span>Welcome, <%= username %>!</span>
-    </header>
-    <div id="chat" class="chat-box"></div>
-    <form id="message-form" class="message-form">
-      <input type="text" id="message" placeholder="Type a message..." autocomplete="off" required>
-      <button type="submit">Send</button>
-    </form>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const socket = io();
-      const username = '<%= username %>';
-      const chatBox = document.getElementById('chat');
-      const messageForm = document.getElementById('message-form');
-      const messageInput = document.getElementById('message');
-
-      // Join the chat
-      socket.emit('join', username);
-
-      // Display received messages
-      socket.on('message', (data) => {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message-bubble');
-        if (data.username === username) {
-          messageElement.classList.add('sent');
-        } else {
-          messageElement.classList.add('received');
-        }
-        messageElement.innerHTML = `
-          <div class="message-info">
-            <span class="message-username">${data.username}</span>
-            <span class="message-timestamp">${data.timestamp}</span>
-          </div>
-          <div class="message-text">${data.message}</div>
-        `;
-        chatBox.appendChild(messageElement);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      });
-
-      // Send a message
-      messageForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = messageInput.value.trim();
-        if (message) {
-          socket.emit('message', message);
-          messageInput.value = '';
-        }
-      });
-    });
-  </script>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat Room</h1>
+            <span class="welcome-user">Welcome, <%= username %>!</span>
+            <button id="logout-button" class="logout-button">Logout</button>
+        </header>
+        <div id="chat" class="chat-box"></div>
+        <form id="message-form" class="message-form">
+            <input type="text" id="message" placeholder="Type a message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.getElementById('logout-button').addEventListener('click', () => {
+            window.location.href = '/logout';
+        });
+    </script>
 </body>
+
 </html>

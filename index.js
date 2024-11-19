@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
-const moment = require('moment');
 
 const app = express();
 const server = http.createServer(app);
@@ -24,19 +23,25 @@ app.set('views', path.join(__dirname, 'views'));
 // Store connected users
 const users = new Map();
 
-// Route to display the login page
+// Route: Display login page
 app.get('/', (_req, res) => {
   res.render('login');
 });
 
-// Handle login form submission
+// Route: Handle login
 app.post('/login', (req, res) => {
   const { username } = req.body;
   if (username) {
-    res.render('chat', { username }); // Pass the username to the template
+    console.log(`User logged in with username: ${username}`);
+    res.render('chat', { username });
   } else {
     res.redirect('/');
   }
+});
+
+// Route: Handle logout
+app.get('/logout', (_req, res) => {
+  res.redirect('/'); // Redirect to login page
 });
 
 // Socket.io functionality
@@ -51,10 +56,11 @@ io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
     const username = users.get(socket.id);
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     io.emit('message', {
       username,
       message,
-      timestamp: moment().format('h:mm A'),
+      timestamp,
     });
   });
 
