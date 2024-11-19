@@ -8,15 +8,33 @@ const io = require('socket.io')(http, {
   }
 });
 const cors = require('cors');
+const path = require('path');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
 
 // Basic route to test if server is running
+// Serve the login page
 app.get('/', (_req, res) => {
-  res.send('WebRTC Chat Server is running');
+  res.render('login');
+});
+
+// Handle login form submission
+app.post('/login', (req, res) => {
+  const { username } = req.body;
+  if (username) {
+    res.render('chat', { username });
+  } else {
+    res.redirect('/');
+  }
 });
 
 // Store connected users and their socket IDs
