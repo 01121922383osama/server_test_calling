@@ -11,8 +11,8 @@
   "name": "chat-app-server",
   "private": true,
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "version": "1.0.0"
 }
